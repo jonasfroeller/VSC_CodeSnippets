@@ -1,0 +1,20 @@
+{
+  "adoc": {
+    "prefix": "adoc\r",
+    "description": "creates adoc head\r",
+    "body": [
+      ":imagesdir: ./imgs\r",
+      ":includedir: ../snippets\r",
+      ":source-highlighter: highlight.js\r",
+      ":doctype: book\r",
+      ":toc: left\r",
+      ":toclevels: 5\r",
+      ":icons: font\r",
+      ":hide-uri-scheme:\r",
+      "\r",
+      "= ${1:project}\r",
+      "Jonas Froeller\r",
+      "1.0.0, {docdate}: ${2:project}"
+    ]
+  }
+}
