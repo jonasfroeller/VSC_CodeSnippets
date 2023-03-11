@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="libraries/pico/pico.css">
+    <title>VSC Snippets</title>
+</head>
+
+<body>
+    <main class="container">
+        <div class="headings">
+            <h1>VSC Snippets</h1>
+            <h3>Jonas Fröller</h3>
+        </div>
+
+        <hr>
+
+        <section class="grid" id="snippets">
+        </section>
+        <script>
+            const snippetLangs = [["adoc", "asciidoc", "asciidoc"], ["gitignore", "gitignore", "ignore"]];
+            const snippets = document.getElementById('snippets');
+
+            snippetLangs.forEach(lang => {
+                fetch(`/snippets/${lang[2]}.json`)
+                    .then(response => response.json())
+                    .then(data => {
+                        let codeLines = "";
+                        data[lang[0]].body.forEach(line => {
+                            codeLines += line + "<br>"
+                        })
+
+                        snippets.innerHTML += `
+                    <div class="container-fluid">
+                        </svg>
+                        <h3>${lang[1]} (prefix: .${lang[0]}) <br>                        
+                            <a href="/snippets/${lang[1]}.json" download target="_blank" role="button" class="secondary mt-1">
+                            download json
+                            </a>
+                        </h3>
+                        <p>
+                            ${data[lang[0]].description}
+                        </p>
+                        <details>
+                        <summary role="button">view code</summary>
+                        <code>
+                            <img src="/libraries/feather/clipboard.svg" class="copyCode" data-code="${data[lang[0]].body}" onclick="() => copyCode(this)">
+                            ${codeLines}
+                        </code> 
+                        </details>
+                        <a href="/snippets/${lang[1]}.json" target="_blank">
+                            /snippets/${lang[1]}.json
+                        </a>
+                    </div>`;
+                    })
+                    .catch(error => console.error(error));
+            });
+        </script>
+        <style>
+            .mt-1 {
+                margin-top: 1rem;
+            }
+
+            code {
+                position: relative;
+            }
+
+            .copyCode {
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: 30px;
+            }
+        </style>
+    </main>
+    <script>
+        function copyCode(element) {
+            const codeElement = element.parentElement.parentElement.querySelector("code");
+            if (codeElement) {
+                navigator.clipboard.writeText(codeElement.textContent)
+                    .then(() => console.log("Code copied to clipboard"))
+                    .catch(error => console.error("Could not copy code to clipboard:", error));
+            }
+        }
+    </script>
+</body>
+
+</html>
