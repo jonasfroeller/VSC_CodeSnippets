@@ -6,14 +6,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="libraries/pico/pico.css">
+    <link rel="icon" href="static/favicon.png" />
     <title>VSC Snippets</title>
 </head>
 
 <body>
     <main class="container">
         <div class="headings">
-            <h1>VSC Snippets</h1>
-            <h3>Jonas Fröller</h3>
+            <h1>Visual Studio Code Snippets</h1>
+            <h3><a href="https://code.visualstudio.com/Download">download vsc</a></h3>
         </div>
 
         <hr>
@@ -37,7 +38,7 @@
                     <div class="container-fluid">
                         </svg>
                         <h3>${lang[1]} (prefix: .${lang[0]}) <br>                        
-                            <a href="/snippets/${lang[1]}.json" download target="_blank" role="button" class="secondary mt-1">
+                            <a href="/snippets/${lang[2]}.json" download target="_blank" role="button" class="secondary mt-1">
                             download json
                             </a>
                         </h3>
@@ -51,8 +52,8 @@
                             ${codeLines}
                         </code> 
                         </details>
-                        <a href="/snippets/${lang[1]}.json" target="_blank">
-                            /snippets/${lang[1]}.json
+                        <a href="/snippets/${lang[2]}.json" target="_blank">
+                            /snippets/${lang[2]}.json
                         </a>
                     </div>`;
                     })
