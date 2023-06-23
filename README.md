@@ -1,24 +1,24 @@
-# Getting Started with [Fastify-CLI](https://www.npmjs.com/package/fastify-cli)
+# VSC Code Snippets
 
-This project was bootstrapped with Fastify-CLI.
+Code snippets for Visual Studio Code.
 
-## Available Scripts
+`npm i vsc-code-snippets` <span style="color:green">// download all snippets from npm</span>
 
-In the project directory, you can run:
+## Content
 
-### `npm run dev`
+**Includes snippets for following file extensions:**
 
-To start the app in dev mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+* .gitignore
+* .asciidoc
 
-### `npm start`
+## Tech
 
-For production mode
+### Fastify
 
-### `npm run test`
+[Fastify-CLI](https://www.npmjs.com/package/fastify-cli)
 
-Run the test cases.
+`npm run dev` <span style="color:green">// run in development mode</span>
 
-## Learn More
+`npm start` <span style="color:green">// run in production</span>
 
-To learn Fastify, check out the [Fastify documentation](https://www.fastify.io/docs/latest/).
+`npm run test` <span style="color:green">// run test cases</span>
