@@ -1,0 +1,63 @@
+name: Create Release with snippets.zip
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  create_release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Determine Changes
+        id: release_notes
+        run: |
+          git diff --name-status HEAD^ HEAD ./public/snippets > changed_files.txt
+          awk -F'\t' '{ if ($1 == "A") print "* " $2 " (status: added)"; else print "* " $2 " (status: updated)"; }' changed_files.txt > release_notes.txt
+          echo "::set-output name=notes::$(cat release_notes.txt)"
+
+      - name: Get Latest Release
+        id: get_latest_release
+        run: |
+          latest_release=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/releases/latest" | \
+            jq -r '.tag_name')
+          echo "::set-output name=latest_release::${latest_release}"
+
+      - name: Determine Next Release Version
+        id: determine_next_version
+        run: |
+          previous_release=${{ steps.get_latest_release.outputs.latest_release }}
+          version_without_v=$(echo "${previous_release}" | sed 's/^v//')
+          next_version_without_v=$(echo "${version_without_v}" | awk -F '.' 'BEGIN { OFS="." } NF==1{ print ++$NF }; NF>1 { $NF=sprintf("%0*d", length($NF), ($NF)+1); print }')
+          next_release="v${next_version_without_v}"
+          echo "::set-output name=next_release::${next_release}"
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.determine_next_version.outputs.next_release }}
+          release_name: ${{ steps.determine_next_version.outputs.next_release }}
+          draft: false
+          prerelease: false
+          body: |
+            # Release Notes
+
+            ${{ steps.release_notes.outputs.notes }}
+
+      - name: Create ZIP Archive Including Snippets
+        run: zip -r snippets.zip ./public/snippets
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: snippets.zip
+          asset_name: snippets.zip
+          asset_content_type: application/zip
