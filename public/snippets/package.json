@@ -1,6 +1,6 @@
 {
   "name": "vsc-code-snippets",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Code snippets for Visual Studio Code.",
   "main": ".",
   "scripts": {
